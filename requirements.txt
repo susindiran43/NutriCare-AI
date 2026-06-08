@@ -1,9 +1,10 @@
-streamlit
+Flask
 pandas
 numpy
 scikit-learn
 sentence-transformers
 faiss-cpu
-google-generativeai
-joblib
 python-dotenv
+streamlit
+joblib
+google-generativeai
