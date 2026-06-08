@@ -1,0 +1,51 @@
+Disease,Recommended Food,Avoid Food,Reason
+Fever,Soup,Fried Food,Easy Digestion
+Cold,Ginger Tea,Ice Cream,Provides Warmth
+Cough,Honey,Cold Drinks,Soothes Throat
+Diarrhea,Banana,Spicy Food,Gut Recovery
+Flu,Chicken Soup,Junk Food,Boosts Recovery
+Migraine,Magnesium Rich Foods,Caffeine,Reduces Triggers
+Diabetes,Whole Grains,Sugary Foods,Controls Blood Sugar
+Hypertension,Leafy Greens,Salty Foods,Maintains Blood Pressure
+Asthma,Vitamin C Fruits,Processed Foods,Supports Lung Health
+Anemia,Spinach,Junk Food,Improves Iron Levels
+Arthritis,Omega-3 Fish,Fried Foods,Reduces Inflammation
+Obesity,Vegetables,Fast Food,Weight Management
+Gastritis,Oatmeal,Spicy Foods,Protects Stomach
+Constipation,Fiber Rich Fruits,Processed Foods,Improves Digestion
+Food Poisoning,Rice Porridge,Oily Foods,Eases Digestion
+Typhoid,Boiled Vegetables,Street Food,Prevents Infection
+Chickenpox,Soft Foods,Spicy Foods,Avoids Irritation
+Dengue,Papaya Leaf Juice,Fried Foods,Supports Platelets
+Malaria,Hydrating Foods,Alcohol,Maintains Hydration
+Tuberculosis,Protein Rich Foods,Junk Food,Supports Immunity
+Bronchitis,Warm Soup,Cold Drinks,Relieves Airways
+Pneumonia,Protein Foods,Processed Foods,Speeds Recovery
+Sinusitis,Ginger Tea,Ice Cream,Reduces Congestion
+Allergy,Citrus Fruits,Known Allergens,Prevents Reactions
+Acidity,Banana,Carbonated Drinks,Reduces Acid
+Ulcer,Soft Foods,Spicy Foods,Protects Stomach Lining
+Kidney Stones,Water,Salty Snacks,Prevents Stone Formation
+Liver Disease,Fruits and Vegetables,Alcohol,Protects Liver
+Heart Disease,Oats,Saturated Fat,Supports Heart Health
+Stroke,Whole Grains,Processed Meat,Improves Circulation
+Depression,Omega-3 Foods,Excess Sugar,Supports Brain Health
+Anxiety,Chamomile Tea,Energy Drinks,Promotes Calmness
+Insomnia,Milk,Caffeine,Improves Sleep
+Back Pain,Calcium Rich Foods,Junk Food,Supports Bones
+Osteoporosis,Dairy Products,Soft Drinks,Strengthens Bones
+Hypothyroidism,Seafood,Processed Foods,Supports Thyroid
+Hyperthyroidism,Leafy Vegetables,Caffeine,Reduces Symptoms
+Eczema,Omega-3 Foods,Processed Foods,Supports Skin Health
+Psoriasis,Fruits and Vegetables,Alcohol,Reduces Inflammation
+Acne,Fresh Fruits,Oily Foods,Promotes Clear Skin
+Dehydration,Coconut Water,Alcohol,Restores Fluids
+Heat Stroke,Watermelon,Spicy Foods,Cools Body
+Viral Infection,Vitamin C Fruits,Junk Food,Boosts Immunity
+Bacterial Infection,Protein Rich Foods,Processed Foods,Supports Recovery
+Eye Strain,Carrots,Junk Food,Supports Vision
+Hair Loss,Protein Foods,Sugary Foods,Promotes Hair Growth
+Weak Immunity,Citrus Fruits,Processed Foods,Boosts Immunity
+Fatigue,Nuts and Seeds,Energy Drinks,Sustained Energy
+Indigestion,Yogurt,Greasy Foods,Improves Digestion
+Motion Sickness,Crackers,Oily Foods,Settles Stomach

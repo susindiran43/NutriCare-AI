@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCare AI - Intelligent Symptom-based Food Recommendation System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2c1.66 0 3 1.34 3 3v7c0 1.66-1.34 3-3 3s-3-1.34-3-3V5c0-1.66 1.34-3 3-3z"/>
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+                        <line x1="12" y1="19" x2="12" y2="22"/>
+                    </svg>
+                </div>
+                <h2>NutriCare <span>AI</span></h2>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" id="tab-predict-btn" onclick="switchTab('predict')">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    Symptom Predictor
+                </button>
+                <button class="nav-btn" id="tab-search-btn" onclick="switchTab('search')">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Dietary Search
+                </button>
+                <button class="nav-btn" id="tab-catalog-btn" onclick="switchTab('catalog')">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    Conditions Directory
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>AI Nutritional Intake Consultant</p>
+                <span class="version">v1.2.0</span>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <span class="sub">Welcome to NutriCare AI Dashboard</span>
+                    <h1 id="page-title">Symptom-based Nutritional Advisor</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <span class="dot"></span>
+                        AI Engine Online
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Frame -->
+            <div class="content-frame">
+                
+                <!-- TAB 1: PREDICT -->
+                <section id="tab-predict" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <!-- Left Panel: Input Symptoms -->
+                        <div class="panel glass">
+                            <div class="panel-header">
+                                <span class="badge">Intake</span>
+                                <h3>Select Your Symptoms</h3>
+                                <p>Search and select the symptoms you are currently experiencing to run diagnostic predictions.</p>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="symptom-search-container">
+                                    <div class="search-input-wrapper">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        </svg>
+                                        <input type="text" id="symptom-search" placeholder="Type symptom (e.g. fever, headache, chills)..." oninput="filterSymptoms()">
+                                        <button class="clear-btn" id="clear-search" onclick="clearSearchInput()" style="display:none;">&times;</button>
+                                    </div>
+                                    <div class="dropdown-list" id="symptoms-dropdown">
+                                        <!-- Symptoms populated dynamically -->
+                                    </div>
+                                </div>
+
+                                <div class="selected-symptoms-section">
+                                    <div class="section-title">
+                                        <h4>Selected Symptoms</h4>
+                                        <span class="count-badge" id="selected-count">0</span>
+                                    </div>
+                                    <div class="symptom-tags" id="selected-tags-container">
+                                        <div class="empty-state">No symptoms selected yet. Use the search box above.</div>
+                                    </div>
+                                </div>
+
+                                <div class="action-section">
+                                    <button class="btn btn-primary btn-block btn-lg" id="predict-btn" onclick="runPrediction()">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="5 3 19 12 5 21 5 3"/>
+                                        </svg>
+                                        Analyze & Recommend Food
+                                    </button>
+                                    <button class="btn btn-secondary btn-block" onclick="resetSymptoms()">Reset Selection</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Results -->
+                        <div class="panel glass results-panel" id="prediction-results">
+                            <!-- Default State -->
+                            <div class="results-placeholder" id="results-placeholder">
+                                <div class="placeholder-icon">
+                                    <svg viewBox="0 0 24 24" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                    </svg>
+                                </div>
+                                <h3>Diagnostics Output</h3>
+                                <p>Select symptoms on the left and click analyze to output the neural disease prediction, precaution list, and custom food intake recommendations.</p>
+                            </div>
+
+                            <!-- Loading State -->
+                            <div class="results-loading" id="results-loading" style="display:none;">
+                                <div class="spinner"></div>
+                                <h3>Analyzing Health Symptoms</h3>
+                                <p>Running inference classifier and querying FAISS semantic vector db...</p>
+                            </div>
+
+                            <!-- Content State (Initially Hidden) -->
+                            <div class="results-content" id="results-content" style="display:none;">
+                                <div class="diagnosis-header">
+                                    <div class="diagnosis-meta">
+                                        <span class="badge badge-success">Prediction Result</span>
+                                        <h2 id="result-disease-name">Diabetes</h2>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-label">Classifier Confidence: <span id="result-confidence">95%</span></div>
+                                            <div class="progress-track">
+                                                <div class="progress-fill" id="result-confidence-bar" style="width: 95%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid-layout cols-2">
+                                    <!-- Description -->
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                                            </svg>
+                                            <h4>Clinical Description</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <p id="result-description">Description text goes here...</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Precautions -->
+                                    <div class="card card-warning">
+                                        <div class="card-header">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                                            </svg>
+                                            <h4>Recommended Precautions</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="precaution-list" id="result-precautions-list">
+                                                <!-- Precautions populated dynamically -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Nutrition Advice Card -->
+                                <div class="card card-premium nutrition-card">
+                                    <div class="card-header">
+                                        <div class="premium-badge"><span id="diet-match-badge">FAISS Semantic Match</span></div>
+                                        <div class="header-title-group">
+                                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                            </svg>
+                                            <h3>Dietary Guideline for <span id="nutrition-disease-title">Fever</span></h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="nutrition-split">
+                                            <div class="diet-box recommend">
+                                                <h5>
+                                                    <span class="diet-icon">✔</span>
+                                                    Recommended Foods
+                                                </h5>
+                                                <p id="result-recommended-food">Oats, leafy vegetables</p>
+                                            </div>
+                                            <div class="diet-box avoid">
+                                                <h5>
+                                                    <span class="diet-icon">✖</span>
+                                                    Foods to Avoid
+                                                </h5>
+                                                <p id="result-avoid-food">Salty foods, junk foods</p>
+                                            </div>
+                                        </div>
+                                        <div class="diet-reason">
+                                            <h6>Clinical / Physiological Rationale</h6>
+                                            <p id="result-diet-reason">Reasoning here...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: SEARCH -->
+                <section id="tab-search" class="tab-content">
+                    <div class="search-layout glass">
+                        <div class="search-hero">
+                            <h2>Nutritional AI Search</h2>
+                            <p>Ask natural language questions to search the vector database of clinical dietary guidelines using FAISS semantic search.</p>
+                            
+                            <div class="semantic-search-bar">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                                <input type="text" id="semantic-search-input" placeholder="Type a search query (e.g. 'what should i eat when i have fever' or 'diarrhea avoid food')..." onkeydown="handleSearchKeyDown(event)">
+                                <button class="btn btn-primary" onclick="runSemanticSearch()">Search AI DB</button>
+                            </div>
+                            
+                            <div class="suggestions-container">
+                                <span>Try queries:</span>
+                                <button class="chip" onclick="applySearchSuggestion('What is the best food for cold?')">Foods for cold</button>
+                                <button class="chip" onclick="applySearchSuggestion('Diet for high blood pressure / hypertension')">Hypertension diet</button>
+                                <button class="chip" onclick="applySearchSuggestion('Foods to avoid with gastritis')">Gastritis avoid list</button>
+                                <button class="chip" onclick="applySearchSuggestion('Gut recovery food for diarrhea')">Diarrhea recovery</button>
+                            </div>
+                        </div>
+
+                        <div class="search-results-section">
+                            <div class="search-results-loading" id="search-loading" style="display:none;">
+                                <div class="spinner"></div>
+                                <p>Searching vector space index...</p>
+                            </div>
+
+                            <div class="search-results-container" id="search-results-container">
+                                <div class="search-empty-state">
+                                    <div class="icon-bubble">
+                                        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        </svg>
+                                    </div>
+                                    <h3>Awaiting Search Query</h3>
+                                    <p>Your semantic search results will appear here. The system uses embeddings to find appropriate dietary guidelines even without matching disease words exactly.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: CATALOG -->
+                <section id="tab-catalog" class="tab-content">
+                    <div class="catalog-layout">
+                        <div class="catalog-filter-bar glass">
+                            <div class="filter-wrapper">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filter-icon">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                                </svg>
+                                <input type="text" id="catalog-filter-input" placeholder="Filter conditions alphabetically..." oninput="filterCatalogGrid()">
+                            </div>
+                            <div class="catalog-meta">
+                                Total database conditions: <span id="catalog-total-count">50</span>
+                            </div>
+                        </div>
+
+                        <div class="catalog-grid" id="catalog-grid-container">
+                            <!-- Populated dynamically with grid cards -->
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- Main Javascript -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
