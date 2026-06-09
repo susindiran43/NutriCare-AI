@@ -83,17 +83,29 @@ def initialize_app():
     else:
         print(f"Warning: Nutrition knowledge CSV not found at {nutr_path}")
 
-    # 5. Load Sentence Transformer
-    print("Loading SentenceTransformer model...")
-    sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
+def get_sentence_model():
+    global sentence_model
+    if sentence_model is None:
+        local_path = './models/all-MiniLM-L6-v2'
+        if os.path.exists(local_path):
+            print(f"Loading SentenceTransformer from local directory: {local_path}...")
+            sentence_model = SentenceTransformer(local_path)
+        else:
+            print("Downloading and loading SentenceTransformer model ('all-MiniLM-L6-v2')...")
+            sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
+    return sentence_model
 
-    # 6. Load FAISS index
-    faiss_path = 'vector_db/faiss_index'
-    if os.path.exists(faiss_path):
-        faiss_index = faiss.read_index(faiss_path)
-        print("FAISS Index loaded successfully.")
-    else:
-        print(f"Warning: FAISS index not found at {faiss_path}")
+def get_faiss_index():
+    global faiss_index
+    if faiss_index is None:
+        faiss_path = 'vector_db/faiss_index'
+        if os.path.exists(faiss_path):
+            print("Loading FAISS index...")
+            faiss_index = faiss.read_index(faiss_path)
+            print("FAISS Index loaded successfully.")
+        else:
+            print(f"Warning: FAISS index not found at {faiss_path}")
+    return faiss_index
 
 # Initialize components before handling requests
 initialize_app()
@@ -157,11 +169,14 @@ def predict():
     if norm_predicted in nutrition_norm_map:
         diet_info = nutrition_norm_map[norm_predicted]
         diet_info['match_method'] = 'exact'
-    elif faiss_index is not None and sentence_model is not None and nutrition_df is not None:
-        # Embed the predicted disease name and query the FAISS database
-        q_emb = sentence_model.encode([prediction])
-        D, I = faiss_index.search(np.array(q_emb).astype('float32'), k=1)
-        match_idx = I[0][0]
+    else:
+        s_model = get_sentence_model()
+        f_idx = get_faiss_index()
+        if f_idx is not None and s_model is not None and nutrition_df is not None:
+            # Embed the predicted disease name and query the FAISS database
+            q_emb = s_model.encode([prediction])
+            D, I = f_idx.search(np.array(q_emb).astype('float32'), k=1)
+            match_idx = I[0][0]
         
         if match_idx >= 0 and match_idx < len(nutrition_df):
             row = nutrition_df.iloc[match_idx]
@@ -192,7 +207,9 @@ def predict():
 
 @app.route('/api/search', methods=['POST'])
 def search():
-    if faiss_index is None or sentence_model is None or nutrition_df is None:
+    s_model = get_sentence_model()
+    f_idx = get_faiss_index()
+    if f_idx is None or s_model is None or nutrition_df is None:
         return jsonify({"error": "Vector database components not fully loaded"}), 500
         
     data = request.json or {}
@@ -202,10 +219,10 @@ def search():
         return jsonify({"error": "Empty search query"}), 400
         
     # Perform FAISS search
-    q_emb = sentence_model.encode([query])
+    q_emb = s_model.encode([query])
     # Search for top 3 matches
     k = min(3, len(nutrition_df))
-    D, I = faiss_index.search(np.array(q_emb).astype('float32'), k=k)
+    D, I = f_idx.search(np.array(q_emb).astype('float32'), k=k)
     
     results = []
     for rank, match_idx in enumerate(I[0]):

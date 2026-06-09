@@ -2,5 +2,5 @@ services:
   - type: web
     name: nutricare-ai
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python download_model.py
     startCommand: python app.py
