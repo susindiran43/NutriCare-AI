@@ -643,7 +643,7 @@ if navigation_selection == "🧬 Symptom Predictor":
             <p style="font-size:12.5px; color:#334155; line-height:1.4; margin:0 0 10px 0;">{daily_tips[st.session_state.tip_idx]}</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Next advice tip ➜", size="small"):
+        if st.button("Next advice tip ➜"):
             st.session_state.tip_idx = (st.session_state.tip_idx + 1) % len(daily_tips)
             st.rerun()
 
